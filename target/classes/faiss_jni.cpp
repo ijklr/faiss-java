@@ -25,9 +25,9 @@ JNIEXPORT void JNICALL Java_faiss_FaissJni_cppCtor
   (JNIEnv *env, jobject obj, jint dim, jint index_type) {
     switch(index_type) {
 	case 0:
-	    indexInterface = new Index();
-	case 1:
 	    indexInterface = new IndexFlat(dim);
+	case 1:
+	    indexInterface = new IndexFlatL2(dim);
     }
     std::cout << ":)!!! jint=" << dim <<std::endl;
     std::cout << "index_type"<< index_type <<std::endl;

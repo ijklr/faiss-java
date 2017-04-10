@@ -9,7 +9,7 @@ public class App
    // static final String ANNOY_LIB_PATH = extractAnnoyBinaries();
     static final String libraryName = System.mapLibraryName("faiss");
     static {
-        System.load("/Users/scheng/a/faiss-java/faiss-master/libfaiss.dylib");
+        System.load("/home/sc/a/faiss-java/faiss-master/libfaiss.so");
     }
 //    private static String extractAnnoyBinaries() {
 //        InputStream faissJni = FaissJni.class.getResourceAsStream("/faiss-master/" + libraryName);

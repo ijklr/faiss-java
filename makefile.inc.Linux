@@ -60,11 +60,11 @@ FAISSSHAREDFLAGS=-shared
 BLASCFLAGS=-DFINTEGER=int
 
 # This is for Centos:
-BLASLDFLAGS=/usr/lib64/libopenblas.so.0
+#BLASLDFLAGS=/usr/lib64/libopenblas.so.0
 
 # for Ubuntu 16: 
-# sudo apt-get install libopenblas-dev python-numpy python-dev
-# BLASLDFLAGS=/usr/lib/libopenblas.so.0
+#sudo apt-get install libopenblas-dev python-numpy python-dev
+BLASLDFLAGS=/usr/lib/libopenblas.so.0
 
 # for Ubuntu 14: 
 # sudo apt-get install libopenblas-dev liblapack3 python-numpy python-dev
@@ -146,3 +146,20 @@ BLASLDFLAGSNVCC=-Xlinker $(BLASLDFLAGS)
 
 # Same, but to generate a .so
 BLASLDFLAGSSONVCC=-Xlinker  $(BLASLDFLAGS)
+
+##########################################################################
+# Faiss-JAVA
+##########################################################################
+JAVA_HOME :=/usr/lib/jvm/java-8-openjdk-amd64
+
+JNIFLAGS  :=-lc -shared -I. -I$(JAVA_HOME)/include -I$(JAVA_HOME)/include/linux libfaiss.a
+
+faiss_jni.h:
+	rm faiss_jni.h
+	javah -o faiss_jni.h src/main/java/faiss/FaissJni.java
+
+faissjni: faiss_jni.h libfaiss.a
+	rm -f libfaiss.so
+	$(CC) $(CFLAGS) $(LDFLAGS) $(FAISSSHAREDFLAGS) $(JNIFLAGS) -o libfaiss.so faiss_jni.cpp
+easy: libfaiss.a
+	$(CC) $(CFLAGS) $(LDFLAGS) -o easytest easytest.cpp libfaiss.a
